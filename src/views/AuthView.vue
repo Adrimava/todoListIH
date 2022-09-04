@@ -3,12 +3,12 @@
   <form>
     <div class="form-input">
       <label for="email">Email
-        <input type="email" id="email">
+        <input type="email" id="email" v-model="email">
       </label>
     </div>
     <div class="form-input">
       <label for="password">Password
-        <input type="password" id="password">
+        <input type="password" id="password" v-model="password">
       </label>
     </div>
   </form>
@@ -26,8 +26,8 @@ import userStore from '@/store/user';
 export default {
   data() {
     return {
-      email: 'adrian.maza@ironhack.com',
-      password: 'somePassword',
+      email: 'adrian.maza@ironhack.com', // adrian.maza@ironhack.com
+      password: 'somePassword', // somePassword
     };
   },
   computed: {
@@ -61,7 +61,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .form-input{
   margin: 5px;
 }
