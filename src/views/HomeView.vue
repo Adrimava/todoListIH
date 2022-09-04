@@ -1,3 +1,4 @@
+<!-- eslint-disable vuejs-accessibility/click-events-have-key-events -->
 <template>
   <div class="home">
     <h1>Home</h1>
@@ -5,15 +6,23 @@
     <form>
       <div class="form-input">
         <label for="new-task">New Task
-          <input type="text" id="new-task" v-model="newTask">
+          <input
+            type="text"
+            id="new-task"
+            v-model="newTask"
+            @keypress.enter.prevent="createNewTask"
+          >
         </label>
-        <button @click="createNewTask">+</button>
+        <button type="button" @click="createNewTask">+</button>
       </div>
     </form>
     <section class="tasks">
-      <h3 v-if="!tasks.length">There isn't any task, create your first one ;)</h3>
-      <div class="task" v-for="task in tasks" :key="task.id">
-        <p>{{task.title}}</p>
+      <h3 v-if="!userTasks.length">There isn't any task, create your first one ;)</h3>
+      <div class="task" v-for="task in userTasks" :key="task.id">
+        <div>
+          <span class="delete-task" @click="this.deleteTask(task.id)">✖</span>
+          <p>{{task.title}}</p>
+        </div>
         <span class="task-status" v-if="task.is_complete">✔</span>
         <span class="task-status" v-else>🔵</span>
       </div>
@@ -36,11 +45,18 @@ export default {
   computed: {
     ...mapState(taskStore, ['tasks']),
     ...mapState(userStore, ['user']),
+    userTasks() {
+      return this.tasks;
+    },
   },
   methods: {
-    ...mapActions(taskStore, ['fetchTasks']),
-    createNewTask() {
-      console.log('New task created:', this.newTask);
+    ...mapActions(taskStore, ['fetchTasks', 'createTask', 'deleteTask']),
+    async createNewTask() {
+      if (this.newTask.length) {
+        await this.createTask(this.newTask, this.user.id);
+        this.newTask = '';
+        console.log('New task created:', this.newTask);
+      }
     },
   },
   created() {
