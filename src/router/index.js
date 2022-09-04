@@ -10,7 +10,7 @@ const routes = [
   },
   {
     path: '/auth',
-    name: 'aouth',
+    name: 'auth',
     component: AuthView,
   },
 ];

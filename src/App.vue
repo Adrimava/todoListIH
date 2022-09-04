@@ -1,6 +1,7 @@
 <template>
   <nav v-if="user">
     <router-link to="/">Home</router-link> |
+    <router-link to="/auth">Auth</router-link> |
   </nav>
   <router-view />
 </template>
