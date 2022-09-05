@@ -1,12 +1,17 @@
 <!-- eslint-disable vuejs-accessibility/click-events-have-key-events -->
 <template>
   <section class="tasks">
-    <h3 v-if="!this.tasks.length">There isn't any task, create your first one ;)</h3>
-    <div class="task" v-for="(task, index) in this.tasks" :key="task.id">
-      <span class="delete-task" @click="this.deleteTask(task.id, index)">✖</span>
+    <h3 v-if="!tasks.length">There isn't any task, create your first one ;)</h3>
+    <div class="task" v-for="(task, index) in tasks" :key="task.id">
+      <span class="delete-task" @click="deleteTask(task.id, index)">✖</span>
       <p class="task-title">{{ task.title }}</p>
-      <span class="task-status" v-if="task.is_complete">✔</span>
-      <span class="task-status" v-else>🔵</span>
+      <p
+        class="task-status"
+        @click="updateTaskStatus(task.id, index, task.is_complete)"
+      >
+        <span v-if="task.is_complete">✔</span>
+        <span v-else>⚪</span>
+      </p>
     </div>
   </section>
 </template>
@@ -20,20 +25,20 @@ export default {
     ...mapState(taskStore, ['tasks']),
   },
   methods: {
-    ...mapActions(taskStore, ['deleteTask']),
+    ...mapActions(taskStore, ['deleteTask', 'updateTaskStatus']),
   },
 };
 </script>
 
 <style scoped>
-.tasks{
+.tasks {
   border: 1px dotted darkblue;
   margin: 10px auto;
   padding: 10px;
   width: 300px;
 }
 
-.task{
+.task {
   margin: 10px;
   padding: 5px;
   border-bottom: 2px dashed blueviolet;
@@ -44,7 +49,7 @@ export default {
   position: relative;
 }
 
-.delete-task{
+.delete-task {
   position: absolute;
   top: 0;
   cursor: pointer;
@@ -52,18 +57,18 @@ export default {
   color: lightcoral;
 }
 
-.delete-task:hover{
+.delete-task:hover {
   background-color: darkred;
   border-radius: 50%;
   font-weight: bold;
   color: white;
 }
 
-.task-title{
+.task-title {
   padding-left: 10px;
 }
 
-.task-status{
+.task-status {
   cursor: pointer;
   padding: 2px;
 }

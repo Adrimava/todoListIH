@@ -21,6 +21,15 @@ export default defineStore('taskStore', {
       else this.tasks.push(newTask);
       console.log('newTask:', newTask);
     },
+    async updateTaskStatus(id, taskIndex, isComplete) {
+      const { data: [updatedTask], error } = await supabase
+        .from('tasks')
+        .update({ is_complete: !isComplete })
+        .match({ id });
+      if (error) throw error;
+      this.tasks[taskIndex] = updatedTask;
+      console.log('update data:', updatedTask);
+    },
     async deleteTask(id, taskIndex) {
       const { error } = await supabase
         .from('tasks')

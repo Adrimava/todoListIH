@@ -1,5 +1,6 @@
 <template>
   <h1>SignUp / SignIn /SignOut</h1>
+  <h2 v-if="this.user">Current user: {{ this.user.email }}</h2>
   <form>
     <div class="form-input">
       <label for="email">Email
