@@ -17,20 +17,18 @@ export default defineStore('taskStore', {
       const { data: [newTask], error } = await supabase
         .from('tasks')
         .insert([{ title, user_id: userId }]);
-      console.log('newTask:', newTask);
       if (error) throw error;
       else this.tasks.push(newTask);
+      console.log('newTask:', newTask);
     },
-    async deleteTask(id) {
+    async deleteTask(id, taskIndex) {
       const { error } = await supabase
         .from('tasks')
         .delete()
         .match({ id });
       if (error) throw error;
-      else {
-        const taskIndex = this.tasks.indexOf(this.tasks.find((task) => task.id === id));
-        this.tasks.splice(taskIndex, 1);
-      }
+      else this.tasks.splice(taskIndex, 1);
+      console.log('task deleted');
     },
   },
 });

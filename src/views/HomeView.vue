@@ -16,17 +16,7 @@
         <button type="button" @click="createNewTask">+</button>
       </div>
     </form>
-    <section class="tasks">
-      <h3 v-if="!userTasks.length">There isn't any task, create your first one ;)</h3>
-      <div class="task" v-for="task in userTasks" :key="task.id">
-        <div>
-          <span class="delete-task" @click="this.deleteTask(task.id)">✖</span>
-          <p>{{task.title}}</p>
-        </div>
-        <span class="task-status" v-if="task.is_complete">✔</span>
-        <span class="task-status" v-else>🔵</span>
-      </div>
-    </section>
+    <TaskList />
   </div>
 </template>
 
@@ -34,9 +24,13 @@
 import { mapState, mapActions } from 'pinia';
 import taskStore from '@/store/task';
 import userStore from '@/store/user';
+import TaskList from '@/components/TaskList.vue';
 
 export default {
   name: 'HomeView',
+  components: {
+    TaskList,
+  },
   data() {
     return {
       newTask: '',
@@ -45,17 +39,14 @@ export default {
   computed: {
     ...mapState(taskStore, ['tasks']),
     ...mapState(userStore, ['user']),
-    userTasks() {
-      return this.tasks;
-    },
   },
   methods: {
-    ...mapActions(taskStore, ['fetchTasks', 'createTask', 'deleteTask']),
+    ...mapActions(taskStore, ['fetchTasks', 'createTask']),
     async createNewTask() {
       if (this.newTask.length) {
         await this.createTask(this.newTask, this.user.id);
-        this.newTask = '';
         console.log('New task created:', this.newTask);
+        this.newTask = '';
       }
     },
   },
@@ -78,27 +69,5 @@ button{
   height: 46px;
   width: 46px;
   margin: 5px;
-}
-
-.tasks{
-  border: 1px dotted darkblue;
-  margin: 10px auto;
-  padding: 10px;
-  width: 300px;
-}
-
-.task{
-  margin: 10px;
-  padding: 5px;
-  border-bottom: 2px dashed blueviolet;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: aliceblue;
-}
-
-.task-status{
-  cursor: pointer;
-  padding: 2px;
 }
 </style>
